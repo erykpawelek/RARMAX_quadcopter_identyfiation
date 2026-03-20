@@ -1,0 +1,30 @@
+# Core Frame Configuration
+FRAME_CLASS, 1       # Sets the vehicle class to a standard Quadcopter
+FRAME_TYPE, 1        # Sets the motor geometry to an X-frame layout
+
+# Power System Configuration (6S LiPo)
+BATT_MONITOR, 4      # Enables analog voltage and current monitoring
+BATT_VOLT_MAX, 25.2  # Sets the absolute maximum voltage for a fully charged 6S pack
+BATT_VOLT_MIN, 19.8  # Sets the critical low-voltage threshold to prevent battery damage
+BATT_ARM_VOLT, 21.0  # Sets the minimum voltage required to allow the motors to arm
+
+# Payload Dropper Configuration (SG90)
+SERVO6_FUNCTION, 28  # Assigns the Gripper function to output channel 6
+GRIP_ENABLE, 1       # Master switch to enable the gripper module in the software
+GRIP_TYPE, 1         # Defines the hardware type as a standard PWM servo
+SIM_GRIP_OFS_X, 0.0  # Aligns the simulated gripper payload X-axis with the drone center
+SIM_GRIP_OFS_Y, 0.0  # Aligns the simulated gripper payload Y-axis with the drone center
+SIM_GRIP_OFS_Z, 0.05 # Drops the simulated gripper payload slightly below the bottom plate
+
+# Motor and Thrust Tuning (For 5-inch props and high TWR)
+MOT_THST_EXPO, 0.65  # Adjusts the thrust curve linearization for 5-inch propellers
+MOT_SPIN_ARM, 0.05   # Sets idle speed to 5% throttle when armed to prevent stalling
+MOT_SPIN_MIN, 0.08   # Sets the minimum throttle in flight to 8% to maintain stability
+
+# Baseline PID Detuning (To prevent oscillations with high thrust margin)
+ATC_RAT_RLL_P, 0.09  # Reduces the Roll Proportional gain for softer immediate reactions
+ATC_RAT_PIT_P, 0.09  # Reduces the Pitch Proportional gain to match the roll axis
+ATC_RAT_RLL_I, 0.09  # Reduces the Roll Integral gain to prevent wind-up during hovers
+ATC_RAT_PIT_I, 0.09  # Reduces the Pitch Integral gain
+ATC_RAT_RLL_D, 0.003 # Reduces the Roll Derivative gain to prevent high-frequency noise
+ATC_RAT_PIT_D, 0.003 # Reduces the Pitch Derivative gain
