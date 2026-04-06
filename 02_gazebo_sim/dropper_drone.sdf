@@ -1,0 +1,262 @@
+<?xml version="1.0" ?>
+<sdf version="1.9">
+  <!-- Standalone drone model definition ready for flight testing -->
+  <!-- Aerodynamics tuned for T-Motor F60 and 5.1 inch propellers on 6S -->
+  <model name="dropper_drone">
+    
+    <!-- 1. MAIN FRAME -->
+    <link name="base_link">
+      <inertial>
+        <mass>1.310</mass>
+        <pose>-0.002060 -0.001083 0.034620 0 0 0</pose>
+        <inertia>
+          <ixx>0.002289119</ixx>
+          <iyy>0.002840295</iyy>
+          <izz>0.003642920</izz>
+          <ixy>-0.000036994</ixy>
+          <ixz>-0.000103084</ixz>
+          <iyz>-0.000046559</iyz>
+        </inertia>
+      </inertial>
+      <visual name="base_link_visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>../01_mechanics/CAD/Drone_assembly_gazebo.obj</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="base_link_collision">
+        <geometry>
+          <mesh>
+            <uri>../01_mechanics/CAD/Drone_assembly_gazebo.stl</uri>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- 2. ROTORS DEFINITION -->
+    <!-- ROTOR 0: Front-Right (CCW) -->
+    <link name="rotor_0">
+      <!-- WARNING: Pose offsets (0.15) are still placeholders, waiting for CAD measurements -->
+      <pose>0.2 -0.2 0.05 0 0 0</pose> 
+      <inertial>
+        <mass>0.005</mass>
+        <pose>0.000001 -0.008448 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.000001622</ixx>
+          <iyy>0.000003206</iyy>
+          <izz>0.000001622</izz>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyz>0</iyz>
+        </inertia>
+      </inertial>
+      <visual name="rotor_0_visual">
+        <geometry>
+          <mesh>
+            <uri>../01_mechanics/CAD/CCW_propeller.obj</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="rotor_0_joint" type="continuous">
+      <parent>base_link</parent>
+      <child>rotor_0</child>
+      <axis>
+        <xyz>0 0 1</xyz> 
+      </axis>
+    </joint>
+
+    <!-- ROTOR 1: Back-Left (CCW) -->
+    <link name="rotor_1">
+      <!-- WARNING: Pose offsets (0.15) are still placeholders -->
+      <pose>-0.2 0.2 0.05 0 0 0</pose> 
+      <inertial>
+        <mass>0.005</mass>
+        <pose>0.000001 -0.008448 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.000001622</ixx>
+          <iyy>0.000003206</iyy>
+          <izz>0.000001622</izz>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyz>0</iyz>
+        </inertia>
+      </inertial>
+      <visual name="rotor_1_visual">
+        <geometry>
+          <mesh>
+            <uri>../01_mechanics/CAD/CCW_propeller.obj</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="rotor_1_joint" type="continuous">
+      <parent>base_link</parent>
+      <child>rotor_1</child>
+      <axis>
+        <xyz>0 0 1</xyz> 
+      </axis>
+    </joint>
+
+    <!-- ROTOR 2: Front-Left (CW) -->
+    <link name="rotor_2">
+      <!-- WARNING: Pose offsets (0.15) are still placeholders -->
+      <pose>0.2 0.2 0.05 0 0 0</pose> 
+      <inertial>
+        <mass>0.005</mass>
+        <pose>0.000001 -0.008448 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.000001622</ixx>
+          <iyy>0.000003206</iyy>
+          <izz>0.000001622</izz>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyz>0</iyz>
+        </inertia>
+      </inertial>
+      <visual name="rotor_2_visual">
+        <geometry>
+          <mesh>
+            <uri>../01_mechanics/CAD/CW_propeller.obj</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="rotor_2_joint" type="continuous">
+      <parent>base_link</parent>
+      <child>rotor_2</child>
+      <axis>
+        <xyz>0 0 1</xyz> 
+      </axis>
+    </joint>
+
+    <!-- ROTOR 3: Back-Right (CW) -->
+    <link name="rotor_3">
+      <!-- WARNING: Pose offsets (0.15) are still placeholders -->
+      <pose>-0.09 -0.09 0.025 0 0 0</pose> 
+      <inertial>
+        <mass>0.005</mass>
+        <pose>0.000001 -0.008448 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.000001622</ixx>
+          <iyy>0.000003206</iyy>
+          <izz>0.000001622</izz>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyz>0</iyz>
+        </inertia>
+      </inertial>
+      <visual name="rotor_3_visual">
+        <geometry>
+          <mesh>
+            <uri>../01_mechanics/CAD/CW_propeller.obj</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="rotor_3_joint" type="continuous">
+      <parent>base_link</parent>
+      <child>rotor_3</child>
+      <axis>
+        <xyz>0 0 1</xyz> 
+      </axis>
+    </joint>
+
+    <!-- 3. AERODYNAMICS PLUGINS (THRUST GENERATION) -->
+    <!-- Parameters calibrated for T-Motor F60 and 5.1 inch props -->
+    <plugin filename="gz-sim-multicopter-motor-model-system" name="gz::sim::systems::MulticopterMotorModel">
+      <jointName>rotor_0_joint</jointName>
+      <linkName>rotor_0</linkName>
+      <turningDirection>ccw</turningDirection>
+      <timeConstantUp>0.010</timeConstantUp>
+      <timeConstantDown>0.015</timeConstantDown>
+      <maxRotVelocity>3665</maxRotVelocity>
+      <motorConstant>0.00000127</motorConstant>
+      <momentConstant>0.016</momentConstant>
+      <commandSubTopic>gazebo/command/motor_speed</commandSubTopic>
+      <motorNumber>0</motorNumber>
+      <rotorDragCoefficient>0.00008</rotorDragCoefficient>
+      <rollingMomentCoefficient>0.000001</rollingMomentCoefficient>
+      <motorSpeedPubTopic>motor_speed/0</motorSpeedPubTopic>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+    </plugin>
+    <plugin filename="gz-sim-multicopter-motor-model-system" name="gz::sim::systems::MulticopterMotorModel">
+      <jointName>rotor_1_joint</jointName>
+      <linkName>rotor_1</linkName>
+      <turningDirection>ccw</turningDirection>
+      <timeConstantUp>0.010</timeConstantUp>
+      <timeConstantDown>0.015</timeConstantDown>
+      <maxRotVelocity>3665</maxRotVelocity>
+      <motorConstant>0.00000127</motorConstant>
+      <momentConstant>0.016</momentConstant>
+      <commandSubTopic>gazebo/command/motor_speed</commandSubTopic>
+      <motorNumber>1</motorNumber>
+      <rotorDragCoefficient>0.00008</rotorDragCoefficient>
+      <rollingMomentCoefficient>0.000001</rollingMomentCoefficient>
+      <motorSpeedPubTopic>motor_speed/1</motorSpeedPubTopic>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+    </plugin>
+    <plugin filename="gz-sim-multicopter-motor-model-system" name="gz::sim::systems::MulticopterMotorModel">
+      <jointName>rotor_2_joint</jointName>
+      <linkName>rotor_2</linkName>
+      <turningDirection>cw</turningDirection>
+      <timeConstantUp>0.010</timeConstantUp>
+      <timeConstantDown>0.015</timeConstantDown>
+      <maxRotVelocity>3665</maxRotVelocity>
+      <motorConstant>0.00000127</motorConstant>
+      <momentConstant>0.016</momentConstant>
+      <commandSubTopic>gazebo/command/motor_speed</commandSubTopic>
+      <motorNumber>2</motorNumber>
+      <rotorDragCoefficient>0.00008</rotorDragCoefficient>
+      <rollingMomentCoefficient>0.000001</rollingMomentCoefficient>
+      <motorSpeedPubTopic>motor_speed/2</motorSpeedPubTopic>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+    </plugin>
+    <plugin filename="gz-sim-multicopter-motor-model-system" name="gz::sim::systems::MulticopterMotorModel">
+      <jointName>rotor_3_joint</jointName>
+      <linkName>rotor_3</linkName>
+      <turningDirection>cw</turningDirection>
+      <timeConstantUp>0.010</timeConstantUp>
+      <timeConstantDown>0.015</timeConstantDown>
+      <maxRotVelocity>3665</maxRotVelocity>
+      <motorConstant>0.00000127</motorConstant>
+      <momentConstant>0.016</momentConstant>
+      <commandSubTopic>gazebo/command/motor_speed</commandSubTopic>
+      <motorNumber>3</motorNumber>
+      <rotorDragCoefficient>0.00008</rotorDragCoefficient>
+      <rollingMomentCoefficient>0.000001</rollingMomentCoefficient>
+      <motorSpeedPubTopic>motor_speed/3</motorSpeedPubTopic>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+    </plugin>
+
+    <!-- 4. ARDUPILOT INTEGRATION PLUGIN -->
+    <plugin filename="ArduPilotPlugin" name="ArduPilotPlugin">
+      <fdm_addr>127.0.0.1</fdm_addr>
+      <fdm_port_in>9002</fdm_port_in>
+      <connectionTimeoutMaxCount>5</connectionTimeoutMaxCount>
+      <lock_step>1</lock_step>
+
+      <!-- Channel Mapping -->
+      <!-- Multiplier matched to new max rotational velocity for stable PWM scaling -->
+      <control channel="0">
+        <jointName>rotor_0_joint</jointName>
+        <multiplier>3665</multiplier>
+      </control>
+      <control channel="1">
+        <jointName>rotor_1_joint</jointName>
+        <multiplier>3665</multiplier>
+      </control>
+      <control channel="2">
+        <jointName>rotor_2_joint</jointName>
+        <multiplier>-3665</multiplier>
+      </control>
+      <control channel="3">
+        <jointName>rotor_3_joint</jointName>
+        <multiplier>-3665</multiplier>
+      </control>
+    </plugin>
+
+  </model>
+</sdf>
