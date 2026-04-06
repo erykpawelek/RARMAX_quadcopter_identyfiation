@@ -1,85 +1,99 @@
-# Mechanical properties of the drone frame withoit dropper pin and propellers:
+# Converted mechanical properties for Gazebo (.sdf) -->
 
-**Overall weight**: 1.310 $kg$ (without payload)
+**All units are in SI standard: mass in kg, distance in m, inertia in $kg*m^2$**
 
-**Overall volume**: 290366,698 $mm^3$
+# 1. Frame
 
-## Center of mass:
+Main frame weight without payload and without dropper pin and propellers.
 
-**X**: -2.060 $mm$
+**Mass**: 1.310
 
-**Y**: -1.083 $mm$
+Center of mass coordinates from reference global frame (converted to meters).
 
-**Z**: 34.620 $mm$
+**Center of mass**:
 
->All of above are offsets from ref global frame, needad to specify it in importet `.obj` in Gazebo
+X: -0.002060
 
-## Moments of inertia:
+Y: -0.001083
 
-### Relative to mass center:
+Z: 0.034620
 
-**Ixx**: 2289,119 $kg*mm^2$
+Inertia tensor relative to mass center (converted to kg\*m^2).
 
-**Iyy**: 2840,295 $kg*mm^2$
+**Moments of inertia**:
 
-**Izz**: 3642,920 $kg*mm^2$
+Ixx: 0.002289119
 
-**Ixy**: -36,994 $kg*mm^2$
+Iyy: 0.002840295
 
-**Ixz**: -103,084 $kg*mm^2$
+Izz: 0.003642920
 
-**Iyz**: -46,559 $kg*mm^2$
+Ixy: -0.000036994
 
-# Proppeler
+Ixz: -0.000103084
 
-## Center of mass:
+Iyz: -0.000046559
 
-**Overall weight**: 0,005 $kg$ (without payload)
+# 2. Propeller
 
-**X**: 0,001 $mm$
+Single propeller weight (applies to both CW and CCW models).
 
-**Y**: -8,448 $mm$
+**Mass**: 0.005
 
-**Z**: 0,000 mm $mm$
+Center of mass coordinates (converted to meters).
 
-## Moments of inertia:
+**Center of mass**:
 
-### Relative to mass center:
+X: 0.000001
 
-**Ixx**: 1,622 $kg*mm^2$
+Y: -0.008448
 
-**Iyy**: 3,206 $kg*mm^2$
+Z: 0.000000
 
-**Izz**: 1,622 $kg*mm^2$
+Inertia tensor relative to mass center (converted to kg\*m^2).
 
-**Ixy**: 0,0 $kg*mm^2$
+**Moments of inertia**:
 
-**Ixz**: 0,0 $kg*mm^2$
+Ixx: 0.000001622
 
-# Pin
+Iyy: 0.000003206
 
-## Center of mass:
+Izz: 0.000001622
 
-**Overall weight**: 0,002 $kg$ (without payload)
+Ixy: 0.000000
 
-**X**: 0,0 $mm$
+Ixz: 0.000000
 
-**Y**: 0,0 $mm$
+Iyz: 0.000000
 
-**Z**: 15,605 $mm$
+# 3. Pin
 
-## Moments of inertia:
+Slider pin weight for the dropper mechanism.
 
-### Relative to mass center:
+**Mass**: 0.002
 
-**Ixx**: 0,223 $kg*mm^2$
+Center of mass coordinates (converted to meters).
 
-**Iyy**: 0,222 $kg*mm^2$
+**Center of mass**:
 
-**Izz**: 0,006 $kg*mm^2$
+X: 0.000000
 
-**Ixy**: 0,0 $kg*mm^2$
+Y: 0.000000
 
-**Ixz**: 0,0 $kg*mm^2$
+Z: 0.015605
 
-**Iyz**: 0,0 $kg*mm^2$
+Inertia tensor relative to mass center (converted to kg\*m^2).
+
+**Moments of inertia**:
+
+Ixx: 0.000000223
+
+Iyy: 0.000000222
+
+Izz: 0.000000006
+
+Ixy: 0.000000
+
+Ixz: 0.000000
+
+Iyz: 0.000000
