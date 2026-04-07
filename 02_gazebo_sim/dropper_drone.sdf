@@ -233,6 +233,65 @@
       </axis>
     </joint>
 
+    <!-- Link representing the moving drop pin -->
+    <link name="drop_pin_link">
+      <!-- Starting position based on Blender 3D cursor coordinates -->
+      <pose>0.009 -0.0001 -0.03895 0 0 0</pose>
+      <inertial>
+        <mass>0.005</mass>
+        <inertia>
+          <ixx>0.0000001</ixx>
+          <iyy>0.0000001</iyy>
+          <izz>0.0000001</izz>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyz>0</iyz>
+        </inertia>
+      </inertial>
+      
+      <!-- Simplified collision geometry to avoid physics engine lag -->
+      <collision name="drop_pin_collision">
+        <!-- Rotated 90 degrees on Y axis (1.5708 rad) to align cylinder with X axis -->
+        <pose>-0.015 0 0 0 1.5708 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.0024</radius>
+            <length>0.03</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <!-- Visual representation using the provided CAD file -->
+      <visual name="drop_pin_visual">
+        <geometry>
+          <mesh>
+            <!-- Adjust this path if your Pin.obj is located in a different subfolder -->
+            <uri>../01_mechanics/CAD/Pin.obj</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+
+    <!-- Prismatic joint enabling linear movement along the X axis -->
+    <joint name="drop_pin_joint" type="prismatic">
+      <parent>base_link</parent>
+      <child>drop_pin_link</child>
+      <axis>
+        <xyz>-1 0 0</xyz>
+        <limit>
+          <!-- Lower limit is the fully inserted position -->
+          <lower>0</lower>
+          <!-- Upper limit is the fully extracted position (16 millimeters) -->
+          <upper>0.016</upper>
+        </limit>
+        <dynamics>
+          <!-- Small damping value to prevent physics oscillations -->
+          <damping>0.01</damping>
+          <friction>0.005</friction>
+        </dynamics>
+      </axis>
+    </joint>
+
     <!-- 3. AERODYNAMICS PLUGINS (THRUST GENERATION) -->
     <!-- Parameters calibrated for T-Motor F60 and 5.1 inch props -->
     <plugin filename="gz-sim-multicopter-motor-model-system" name="gz::sim::systems::MulticopterMotorModel">
