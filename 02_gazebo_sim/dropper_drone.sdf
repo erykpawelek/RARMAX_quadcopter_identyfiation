@@ -6,6 +6,24 @@
     
     <!-- 1. MAIN FRAME -->
     <link name="base_link">
+      <!-- IMU sensor definition -->
+      <sensor name="imu_sensor" type="imu">
+        <always_on>1</always_on>
+        <update_rate>250</update_rate>
+        <imu>
+          <angular_velocity>
+            <x><noise type="gaussian"><mean>0</mean><stddev>0.0002</stddev></noise></x>
+            <y><noise type="gaussian"><mean>0</mean><stddev>0.0002</stddev></noise></y>
+            <z><noise type="gaussian"><mean>0</mean><stddev>0.0002</stddev></noise></z>
+          </angular_velocity>
+          <linear_acceleration>
+            <x><noise type="gaussian"><mean>0</mean><stddev>0.017</stddev></noise></x>
+            <y><noise type="gaussian"><mean>0</mean><stddev>0.017</stddev></noise></y>
+            <z><noise type="gaussian"><mean>0</mean><stddev>0.017</stddev></noise></z>
+          </linear_acceleration>
+        </imu>
+      </sensor>
+
       <inertial>
         <mass>1.310</mass>
         <pose>-0.002060 -0.001083 0.034620 0 0 0</pose>
@@ -52,6 +70,19 @@
           <iyz>0</iyz>
         </inertia>
       </inertial>
+
+      <collision name="rotor_0_collision">
+        <!-- Offset the collision to match the physical center of the propeller blades if needed -->
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <!-- Radius and length represent the physical bounds of the spinning propeller -->
+            <radius>0.035</radius> 
+            <length>0.005</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
       <visual name="rotor_0_visual">
         <geometry>
           <mesh>
@@ -60,7 +91,7 @@
         </geometry>
       </visual>
     </link>
-    <joint name="rotor_0_joint" type="continuous">
+    <joint name="rotor_0_joint" type="revolute">
       <parent>base_link</parent>
       <child>rotor_0</child>
       <axis>
@@ -84,6 +115,19 @@
           <iyz>0</iyz>
         </inertia>
       </inertial>
+
+      <collision name="rotor_1_collision">
+        <!-- Offset the collision to match the physical center of the propeller blades if needed -->
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <!-- Radius and length represent the physical bounds of the spinning propeller -->
+            <radius>0.035</radius> 
+            <length>0.005</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
       <visual name="rotor_1_visual">
         <geometry>
           <mesh>
@@ -92,7 +136,7 @@
         </geometry>
       </visual>
     </link>
-    <joint name="rotor_1_joint" type="continuous">
+    <joint name="rotor_1_joint" type="revolute">
       <parent>base_link</parent>
       <child>rotor_1</child>
       <axis>
@@ -116,6 +160,19 @@
           <iyz>0</iyz>
         </inertia>
       </inertial>
+
+      <collision name="rotor_2_collision">
+        <!-- Offset the collision to match the physical center of the propeller blades if needed -->
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <!-- Radius and length represent the physical bounds of the spinning propeller -->
+            <radius>0.035</radius> 
+            <length>0.005</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
       <visual name="rotor_2_visual">
         <geometry>
           <mesh>
@@ -124,7 +181,7 @@
         </geometry>
       </visual>
     </link>
-    <joint name="rotor_2_joint" type="continuous">
+    <joint name="rotor_2_joint" type="revolute">
       <parent>base_link</parent>
       <child>rotor_2</child>
       <axis>
@@ -147,6 +204,19 @@
           <iyz>0</iyz>
         </inertia>
       </inertial>
+
+      <collision name="rotor_3_collision">
+        <!-- Offset the collision to match the physical center of the propeller blades if needed -->
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <!-- Radius and length represent the physical bounds of the spinning propeller -->
+            <radius>0.035</radius> 
+            <length>0.005</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
       <visual name="rotor_3_visual">
         <geometry>
           <mesh>
@@ -155,7 +225,7 @@
         </geometry>
       </visual>
     </link>
-    <joint name="rotor_3_joint" type="continuous">
+    <joint name="rotor_3_joint" type="revolute">
       <parent>base_link</parent>
       <child>rotor_3</child>
       <axis>

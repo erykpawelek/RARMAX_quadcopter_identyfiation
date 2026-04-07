@@ -1,0 +1,167 @@
+<?xml version="1.0" ?>
+<sdf version="1.9">
+    <world name="drone_world">
+    
+        <!-- Physics and basic simulation plugins required by Gazebo Harmonic -->
+        <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics">
+        </plugin>
+        <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster">
+        </plugin>
+        <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
+        </plugin>
+
+        <!-- Global directional light source acting as the Sun -->
+        <light type="directional" name="sun">
+            <cast_shadows>true</cast_shadows>
+            <pose>0 0 10 0 0 0</pose>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <attenuation>
+                <range>1000</range>
+                <constant>0.9</constant>
+                <linear>0.01</linear>
+                <quadratic>0.001</quadratic>
+            </attenuation>
+            <direction>-0.5 0.1 -0.9</direction>
+        </light>
+        <!-- Infinite ground plane for collision and visual reference -->
+        <model name="ground_plane">
+            <static>true</static>
+            <link name="link">
+                <collision name="collision">
+                <geometry>
+                    <plane>
+                    <normal>0 0 1</normal>
+                    <size>100 100</size>
+                    </plane>
+                </geometry>
+                </collision>
+                <visual name="visual">
+                    <geometry>
+                        <plane>
+                        <normal>0 0 1</normal>
+                        <size>100 100</size>
+                        </plane>
+                    </geometry>
+                    <material>
+                        <ambient>0.8 0.8 0.8 1</ambient>
+                        <diffuse>0.8 0.8 0.8 1</diffuse>
+                        <specular>0.8 0.8 0.8 1</specular>
+                    </material>
+                </visual>
+            </link>
+        </model>
+
+    <!-- 4 Cylinders serving as the launchpad for payload clearance -->
+        <model name="launchpad">
+            <static>true</static>
+            <pose>0 0 0 0 0 0</pose>
+            <link name="base_link">
+            
+                <!-- Cylinder 1: Front-Right (X+, Y-) -->
+                <collision name="col_fr">
+                    <pose>0.088388 -0.088388 0.15 0 0 0</pose>
+                    <geometry>
+                        <cylinder>
+                        <radius>0.02</radius>
+                        <length>0.3</length>
+                        </cylinder>
+                    </geometry>
+                </collision>
+                <visual name="vis_fr">
+                    <pose>0.088388 -0.088388 0.15 0 0 0</pose>
+                    <geometry>
+                        <cylinder>
+                        <radius>0.02</radius>
+                        <length>0.3</length>
+                        </cylinder>
+                    </geometry>
+                    <material>
+                        <ambient>0.8 0.2 0.2 1</ambient>
+                        <diffuse>0.8 0.2 0.2 1</diffuse>
+                    </material>
+                </visual>
+
+                <!-- Cylinder 2: Front-Left (X+, Y+) -->
+                <collision name="col_fl">
+                    <pose>0.088388 0.088388 0.15 0 0 0</pose>
+                    <geometry>
+                        <cylinder>
+                        <radius>0.02</radius>
+                        <length>0.3</length>
+                        </cylinder>
+                    </geometry>
+                </collision>
+                <visual name="vis_fl">
+                    <pose>0.088388 0.088388 0.15 0 0 0</pose>
+                    <geometry>
+                        <cylinder>
+                        <radius>0.02</radius>
+                        <length>0.3</length>
+                        </cylinder>
+                    </geometry>
+                    <material>
+                        <ambient>0.8 0.2 0.2 1</ambient>
+                        <diffuse>0.8 0.2 0.2 1</diffuse>
+                    </material>
+                </visual>
+
+                <!-- Cylinder 3: Back-Right (X-, Y-) -->
+                <collision name="col_br">
+                    <pose>-0.088388 -0.088388 0.15 0 0 0</pose>
+                    <geometry>
+                        <cylinder>
+                        <radius>0.02</radius>
+                        <length>0.3</length>
+                        </cylinder>
+                    </geometry>
+                </collision>
+                <visual name="vis_br">
+                    <pose>-0.088388 -0.088388 0.15 0 0 0</pose>
+                    <geometry>
+                        <cylinder>
+                        <radius>0.02</radius>
+                        <length>0.3</length>
+                        </cylinder>
+                    </geometry>
+                    <material>
+                        <ambient>0.8 0.2 0.2 1</ambient>
+                        <diffuse>0.8 0.2 0.2 1</diffuse>
+                    </material>
+                </visual>
+
+                <!-- Cylinder 4: Back-Left (X-, Y+) -->
+                <collision name="col_bl">
+                    <pose>-0.088388 0.088388 0.15 0 0 0</pose>
+                    <geometry>
+                        <cylinder>
+                        <radius>0.02</radius>
+                        <length>0.3</length>
+                        </cylinder>
+                    </geometry>
+                </collision>
+                <visual name="vis_bl">
+                    <pose>-0.088388 0.088388 0.15 0 0 0</pose>
+                    <geometry>
+                        <cylinder>
+                        <radius>0.02</radius>
+                        <length>0.3</length>
+                        </cylinder>
+                    </geometry>
+                    <material>
+                        <ambient>0.8 0.2 0.2 1</ambient>
+                        <diffuse>0.8 0.2 0.2 1</diffuse>
+                    </material>
+                </visual>
+            </link>
+        </model>
+
+        <include>
+            <!-- Change this path to match the actual name/location of your drone's SDF file -->
+            <uri>file://dropper_drone.sdf</uri> 
+            <!-- Spawn the drone at Z = 0.3 meters to sit on the launchpad -->
+            <pose>0 0 0.302 0 0 0</pose>
+        </include>
+
+    </world>
+</sdf>
