@@ -101,3 +101,10 @@ Iyz: 0.000000
 ## Drone layout
 
 ![Skibidi](Drone_base_dims.png)
+
+
+<geometry>
+          <mesh>
+            <uri>../01_mechanics/CAD/Drone_assembly_gazebo.stl</uri>
+          </mesh>
+        </geometry>
