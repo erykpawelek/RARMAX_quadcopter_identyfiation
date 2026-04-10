@@ -21,6 +21,9 @@ MOT_THST_EXPO, 0.65  # Adjusts the thrust curve linearization for 5-inch propell
 MOT_SPIN_ARM, 0.05   # Sets idle speed to 5% throttle when armed to prevent stalling
 MOT_SPIN_MIN, 0.08   # Sets the minimum throttle in flight to 8% to maintain stability
 
+# IMU SYSTEM ORIENTATION
+AHRS_ORIENTATION, 0
+
 # Baseline PID Detuning (To prevent oscillations with high thrust margin)
 ATC_RAT_RLL_P, 0.09  # Reduces the Roll Proportional gain for softer immediate reactions
 ATC_RAT_PIT_P, 0.09  # Reduces the Pitch Proportional gain to match the roll axis

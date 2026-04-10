@@ -164,8 +164,8 @@
         <include>
             <!-- Change this path to match the actual name/location of your drone's SDF file -->
             <uri>file://dropper_drone.sdf</uri> 
-            <!-- Spawn the drone at Z = 0.3 meters to sit on the launchpad -->
-            <pose>0 0 0.302 0 0 0</pose>
+            <!-- Spawn the drone at Z = 0.302 meters to sit on the launchpad -->
+            <pose>0 0 0.301 0 0 0</pose>
         </include>
 
     </world>
