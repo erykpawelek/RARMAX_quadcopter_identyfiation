@@ -1,6 +1,12 @@
 <?xml version="1.0" ?>
 <sdf version="1.9">
     <world name="drone_world">
+
+        <physics name="1ms" type="ignored">
+            <max_step_size>0.0002</max_step_size>
+            <real_time_factor>1.0</real_time_factor>
+            <real_time_update_rate>5000</real_time_update_rate>
+        </physics>
     
         <!-- Physics and basic simulation plugins required by Gazebo Harmonic -->
         <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics">
