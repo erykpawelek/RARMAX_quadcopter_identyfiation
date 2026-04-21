@@ -179,6 +179,21 @@ xlabel('Time [s]');
 ylabel('Altitude [m]');
 legend('Location', 'best');
 
+figure('Name', 'Interpolation Verification - PWM Input');
+% Plot the 50Hz interpolated PWM
+plot(t_grid_noise1, u_eff_n1, 'r-', 'LineWidth', 1.5, 'DisplayName', 'Interpolated PWM (Strict 50Hz)'); hold on;
+grid on;
+% Plot the raw, variable-step PWM from logs
+plot(rcou.time, u_eff_all, 'g.', 'MarkerSize', 8, 'DisplayName', 'Raw PWM Log Data');
+
+% CRITICAL: We zoom in on a small 2-second window. 
+% If you look at the whole 20s, it's just a thick block of color.
+xlim([t_noise1_start + 5, t_noise1_start + 7]); 
+title('Interpolation Verification - Effective PWM (Zoomed 2s window)');
+xlabel('Time [s]');
+ylabel('Effective PWM [\mus]');
+legend('Location', 'best');
+
 %% ARMAX MODEL ESTIMATION - GRID SEARCH (PHYSICS CONSTRAINED)
 disp('Starting ARMAX grid search optimized for PURE SIMULATION...');
 
@@ -303,3 +318,100 @@ title('Simulated Flight Command: Reaction to sudden +50\mus PWM step');
 xlabel('Time [s]');
 ylabel('Altitude Change [m]');
 legend('Noise 1 (Payload Attached)', 'Noise 2 (Payload Detached)', 'Location', 'northwest');
+
+%% CROSS-VALIDATION WITH REAL FLIGHT DATA
+disp('Starting validation sequence using external flight log...');
+% Load the validation data
+validation_data = load('z_validation.mat');
+
+% Extract marker timings from the validation log
+val_marker_str = string(validation_data.markers.text);
+idx_val_p_start  = find(contains(val_marker_str, 'START_STEP_PAYLOAD'));
+idx_val_p_stop   = find(contains(val_marker_str, 'STOP_STEP_PAYLOAD'));
+idx_val_np_start = find(contains(val_marker_str, 'START_STEP_NO_PAYLOAD'));
+idx_val_np_stop  = find(contains(val_marker_str, 'STOP_STEP_NO_PAYLOAD'));
+
+% Get exact timestamps for the stimuli phases
+t_val_p_start  = validation_data.markers.time(idx_val_p_start);
+t_val_p_stop   = validation_data.markers.time(idx_val_p_stop);
+t_val_np_start = validation_data.markers.time(idx_val_np_start);
+t_val_np_stop  = validation_data.markers.time(idx_val_np_stop);
+
+% Create uniform time grids for linear simulation (Ts = 0.02s / 50Hz)
+t_grid_val_p  = t_val_p_start : Ts : t_val_p_stop;
+t_grid_val_np = t_val_np_start : Ts : t_val_np_stop;
+
+% Calculate Effective PWM for the entire validation log (eliminating tilt/drift)
+u_mean_raw_val = (double(validation_data.rcou.c1) + double(validation_data.rcou.c2) + ...
+                  double(validation_data.rcou.c3) + double(validation_data.rcou.c4)) / 4;
+% Interpolate attitudes to match RCOU timestamps and convert to radians
+roll_rad_val  = deg2rad(interp1(validation_data.att.time, validation_data.att.roll, validation_data.rcou.time, 'linear'));
+pitch_rad_val = deg2rad(interp1(validation_data.att.time, validation_data.att.pitch, validation_data.rcou.time, 'linear'));
+% Calculate the pure vertical thrust component
+u_eff_all_val = u_mean_raw_val .* cos(roll_rad_val) .* cos(pitch_rad_val);
+
+% =========================================================
+% VALIDATION PHASE 1: Payload Attached
+% =========================================================
+% 1. Prepare and detrend the input (Effective PWM)
+u_eff_val_p = interp1(validation_data.rcou.time, u_eff_all_val, t_grid_val_p, 'linear')';
+% CRITICAL: Using the exact same operating point found during identification
+u_eff_val_p_detrend = u_eff_val_p - u_mean_payload_hover;
+
+% 2. Prepare and detrend the output (Altitude)
+y_alt_val_p = interp1(validation_data.ctun.time, validation_data.ctun.alt, t_grid_val_p, 'linear')';
+% Find baseline altitude right before the step (2-second window)
+mask_hover_val_p = (validation_data.ctun.time >= (t_val_p_start - 2.0)) & (validation_data.ctun.time <= t_val_p_start);
+alt_op_val_p = mean(validation_data.ctun.alt(mask_hover_val_p));
+y_alt_val_p_detrend = y_alt_val_p - alt_op_val_p;
+
+% 3. Simulate ARMAX model response to the actual recorded PWM step
+% lsim requires a time vector starting from 0
+t_lsim_p = t_grid_val_p - t_grid_val_p(1);
+[y_sim_p, ~] = lsim(best_sys_n1, u_eff_val_p_detrend, t_lsim_p);
+
+% =========================================================
+% VALIDATION PHASE 2: Payload Detached
+% =========================================================
+% 1. Prepare and detrend the input (Effective PWM)
+u_eff_val_np = interp1(validation_data.rcou.time, u_eff_all_val, t_grid_val_np, 'linear')';
+% CRITICAL: Using the exact same operating point found during identification
+u_eff_val_np_detrend = u_eff_val_np - u_mean_no_payload_hover;
+
+% 2. Prepare and detrend the output (Altitude)
+y_alt_val_np = interp1(validation_data.ctun.time, validation_data.ctun.alt, t_grid_val_np, 'linear')';
+% Find baseline altitude right before the step (2-second window)
+mask_hover_val_np = (validation_data.ctun.time >= (t_val_np_start - 2.0)) & (validation_data.ctun.time <= t_val_np_start);
+alt_op_val_np = mean(validation_data.ctun.alt(mask_hover_val_np));
+y_alt_val_np_detrend = y_alt_val_np - alt_op_val_np;
+
+% 3. Simulate ARMAX model response to the actual recorded PWM step
+t_lsim_np = t_grid_val_np - t_grid_val_np(1);
+[y_sim_np, ~] = lsim(best_sys_n2, u_eff_val_np_detrend, t_lsim_np);
+
+% =========================================================
+% PLOTTING RESULTS
+% =========================================================
+figure('Name', 'ARMAX Cross-Validation with Real Flight Logs');
+
+% Plot 1: Payload Attached Comparison
+subplot(2,1,1);
+plot(t_lsim_p, y_alt_val_p_detrend, 'g-', 'LineWidth', 2, 'DisplayName', 'Real Flight Log Data'); hold on;
+plot(t_lsim_p, y_sim_p, 'r--', 'LineWidth', 2, 'DisplayName', ['Simulated ARMAX ', num2str(best_orders_n1)]);
+grid on;
+title('Model Validation: Response to real PWM step (Payload Attached)');
+xlabel('Time [s]');
+ylabel('Altitude Change [m]');
+legend('Location', 'northwest');
+
+% Plot 2: Payload Detached Comparison
+subplot(2,1,2);
+plot(t_lsim_np, y_alt_val_np_detrend, 'g-', 'LineWidth', 2, 'DisplayName', 'Real Flight Log Data'); hold on;
+plot(t_lsim_np, y_sim_np, 'b--', 'LineWidth', 2, 'DisplayName', ['Simulated ARMAX ', num2str(best_orders_n2)]);
+grid on;
+title('Model Validation: Response to real PWM step (Payload Detached)');
+xlabel('Time [s]');
+ylabel('Altitude Change [m]');
+legend('Location', 'northwest');
+
+disp('Validation complete. Compare the solid black line (reality) with dashed lines (simulation).');

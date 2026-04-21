@@ -114,7 +114,6 @@ connection.mav.set_position_target_local_ned_send(
     0, 0, 0,                            # afx, afy, afz
     0, 0                                # yaw, yaw_rate
 )
-
 # Wait safely for stabilization
 safe_delay(args.stab_dur, connection)
         
