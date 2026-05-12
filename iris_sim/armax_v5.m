@@ -21,7 +21,7 @@ nc_vec = 2:4;
 
 %% ── STEP 1: Auto-load CSVs ───────────────────────────────────
 fprintf('=== STEP 1: Loading data ===\n');
-files = dir(fullfile(DATA_DIR, 'run*.csv'));
+files = dir(fullfile(DATA_DIR, 'run*_fig8_*.csv'));
 if isempty(files)
     error('No run*.csv in %s', DATA_DIR);
 end
